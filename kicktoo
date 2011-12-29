@@ -220,3 +220,5 @@ notify                                                                "Install c
 
 [ "${reboot}" == "yes" ] && notify                                    "Rebooting..."
 [ "${reboot}" == "yes" ] && reboot
+
+exit 0
