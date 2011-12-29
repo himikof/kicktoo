@@ -499,6 +499,8 @@ cleanup() {
             spawn "cryptsetup remove ${luksdev}" || warn "could not remove luks device /dev/mapper/${luksdev}"
         done
     fi
+    
+    spawn "cp ${logfile} ${chroot_dir}/root/$(basename ${logfile})" || warn "could not copy install logfile into chroot"
 }
 
 starting_cleanup() {
@@ -506,16 +508,15 @@ starting_cleanup() {
 }
 
 finishing_cleanup() {
-    spawn "cp ${logfile} ${chroot_dir}/root/$(basename ${logfile})" || warn "could not copy install logfile into chroot"
     cleanup
 }
 
 failure_cleanup() {
+    cleanup
+
     if [ -f ${logfile} ]; then
         spawn "mv ${logfile} ${logfile}.failed"     || warn "could not move ${logfile} to ${logfile}.failed"
     fi
-
-    cleanup
 
     #####################################################################
     # FIXME this takes care of umounting a second time ${chroot_dir}/boot
