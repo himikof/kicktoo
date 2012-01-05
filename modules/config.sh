@@ -268,6 +268,14 @@ kernel_sources() {
     kernel_sources="${pkg}"
 }
 
+# defaults to genkernel
+initramfs_builder="genkernel"
+initramfs_builder() {
+    local irfsb=$1
+
+    initramfs_builder="${irfsb}"
+}
+
 timezone() {
     do_tz=yes
     local tz=$1
