@@ -218,6 +218,12 @@ kigen_initramfs_opts() {
     kigen_initramfs_opts="${opts}"
 }
 
+dracut_initramfs_opts() {
+    local opts=$@
+
+    dracut_initramfs_opts="${opts}"
+}
+
 kernel_binary() {
     do_kbin=yes
     local path=$1

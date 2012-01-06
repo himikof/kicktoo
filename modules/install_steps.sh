@@ -361,7 +361,7 @@ build_kernel() {
 
 build_initramfs() {
     # initramfs builder could already be installed in build_kernel
-    if [ -z "$(command -v ${initramfs_builder})" ]; then
+    if [ -z $(spawn_chroot "command -v ${initramfs_builder}") ]; then
         spawn_chroot "emerge ${initramfs_builder}" || die "could not emerge ${initramfs_builder}"
     fi
     
@@ -371,6 +371,9 @@ build_initramfs() {
     # use KIGen 
     elif [ "${initramfs_builder}" == "kigen" ]; then
         spawn_chroot "kigen ${kigen_initramfs_opts} initramfs"  || die "could not build initramfs
+    # use Dracut
+    elif [ "${initramfs_builder}" == "dracut" ]; then
+        spawn_chroot "dracut --force ${dracut_initramfs_opts}"  || die "could not build initramfs"
     fi
 }
 
