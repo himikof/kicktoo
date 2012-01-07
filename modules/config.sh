@@ -218,6 +218,12 @@ kigen_initramfs_opts() {
     kigen_initramfs_opts="${opts}"
 }
 
+dracut_initramfs_opts() {
+    local opts=$@
+
+    dracut_initramfs_opts="${opts}"
+}
+
 kernel_binary() {
     do_kbin=yes
     local path=$1
@@ -266,6 +272,14 @@ kernel_sources() {
     local pkg=$1
 
     kernel_sources="${pkg}"
+}
+
+# defaults to genkernel
+initramfs_builder="genkernel"
+initramfs_builder() {
+    local irfsb=$1
+
+    initramfs_builder="${irfsb}"
 }
 
 timezone() {

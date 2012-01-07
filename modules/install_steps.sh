@@ -337,25 +337,43 @@ build_kernel() {
     # use genkernel
     if [ "${kernel_builder}" == "genkernel" ]; then
         if [ -n "${kernel_config_uri}" ]; then
-            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                    || die "could not fetch kernel config"
-            spawn_chroot "genkernel --kernel-config=/tmp/kconfig ${genkernel_opts} all" || die "could not build custom kernel"
+            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                       || die "could not fetch kernel config"
+            spawn_chroot "genkernel --kernel-config=/tmp/kconfig ${genkernel_opts} kernel" || die "could not build custom kernel"
         elif [ -n "${kernel_config_file}" ]; then
-            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"                      || die "could not copy kernel config"
-            spawn_chroot "genkernel --kernel-config=/tmp/kconfig ${genkernel_opts} all" || die "could not build custom kernel"
+            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"                         || die "could not copy kernel config"
+            spawn_chroot "genkernel --kernel-config=/tmp/kconfig ${genkernel_opts} kernel" || die "could not build custom kernel"
         else
-            spawn_chroot "genkernel ${genkernel_opts} all"                              || die "could not build generic kernel"
+            spawn_chroot "genkernel ${genkernel_opts} kernel"                              || die "could not build generic kernel"
         fi
     # use KIGen 
     elif [ "${kernel_builder}" == "kigen" ]; then
         if [ -n "${kernel_config_uri}" ]; then
-            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                                                             || die "could not fetch kernel config"
-            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel && kigen ${kigen_initramfs_opts} initramfs" || die "could not build custom kernel"
+            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                  || die "could not fetch kernel config"
+            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
         elif [ -n "${kernel_config_file}" ]; then
-            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig" || die "could not copy kernel config"
-            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel && kigen ${kigen_initramfs_opts} initramfs" || die "could not build custom kernel"
+            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"                    || die "could not copy kernel config"
+            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
         else
-            spawn_chroot "kigen ${kigen_kernel_opts} kernel && kigen ${kigen_initramfs_opts} initramfs"                          || die "could not build generic kernel"
+            spawn_chroot "kigen ${kigen_kernel_opts} kernel"                          || die "could not build generic kernel"
         fi
+    fi
+}
+
+build_initramfs() {
+    # initramfs builder could already be installed in build_kernel
+    if [ -z $(spawn_chroot "command -v ${initramfs_builder}") ]; then
+        spawn_chroot "emerge ${initramfs_builder}" || die "could not emerge ${initramfs_builder}"
+    fi
+    
+    # use genkernel
+    if [ "${initramfs_builder}" == "genkernel" ]; then
+        spawn_chroot "genkernel ${genkernel_opts} initramfs"    || die "could not build initramfs"
+    # use KIGen 
+    elif [ "${initramfs_builder}" == "kigen" ]; then
+        spawn_chroot "kigen ${kigen_initramfs_opts} initramfs"  || die "could not build initramfs
+    # use Dracut
+    elif [ "${initramfs_builder}" == "dracut" ]; then
+        spawn_chroot "dracut --force ${dracut_initramfs_opts}"  || die "could not build initramfs"
     fi
 }
 
