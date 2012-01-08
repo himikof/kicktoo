@@ -46,7 +46,7 @@ has() {
 
 import() {
     module=$1
-    if source modules/${module}.sh &>/dev/null ; then
+    if source modules/${module}.sh ; then
         true
 #    elif source /usr/lib/kicktoo-${VERSION}/modules/${module}.sh ; then
     elif source /usr/share/kicktoo/modules/${module}.sh ; then
