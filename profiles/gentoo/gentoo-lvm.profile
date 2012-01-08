@@ -151,6 +151,18 @@ extra_packages          lvm2 dhcpcd # vim openssh vixie-cron syslog-ng
 # post_copy_kernel() {
 # }
 
+# pre_install_kernel_builder() {
+# }
+# skip install_kernel_builder
+# post_install_kernel_builder() {
+# }
+
+# pre_install_initramfs_builder() {
+# }
+# skip install_initramfs_builder
+# post_install_initramfs_builder() {
+# }
+
 # pre_build_kernel() {
 # }
 # skip build_kernel

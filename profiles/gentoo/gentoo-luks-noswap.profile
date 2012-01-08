@@ -133,6 +133,18 @@ hostname                gentoo-luks
 # post_copy_kernel() {
 # }
 
+# pre_install_kernel_builder() {
+# }
+# skip install_kernel_builder
+# post_install_kernel_builder() {
+# }
+
+# pre_install_initramfs_builder() {
+# }
+# skip install_initramfs_builder
+# post_install_initramfs_builder() {
+# }
+
 pre_build_kernel() {
     # FIXME don't global USE static-libs but apply only for cryptsetup and deps
     spawn_chroot "emerge gentoolkit"    || die "could not merge gentoolkit"

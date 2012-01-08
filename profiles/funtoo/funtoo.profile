@@ -122,6 +122,18 @@ post_unpack_repo_tree() {
 # post_copy_kernel() {
 # }
 
+# pre_install_kernel_builder() {
+# }
+# skip install_kernel_builder
+# post_install_kernel_builder() {
+# }
+
+# pre_install_initramfs_builder() {
+# }
+# skip install_initramfs_builder
+# post_install_initramfs_builder() {
+# }
+
 # pre_build_kernel() {
 # }
 # skip build_kernel

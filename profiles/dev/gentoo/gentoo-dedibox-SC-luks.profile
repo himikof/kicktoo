@@ -138,21 +138,27 @@ rcadd                   sshd        default
 # post_copy_kernel() {
 # }
 
-pre_build_kernel() {
-#    spawn_chroot "echo dev-libs/libgcrypt static-libs >> /etc/portage/package.use" || die "cannot append to package.use"
-#    spawn_chroot "echo dev-libs/popt static-libs >> /etc/portage/package.use" || die "cannot append to package.use"
-#    spawn_chroot "echo dev-libs/libgpg-error static-libs >> /etc/portage/package.use" || die "cannot append to package.use"
-#    spawn_chroot "echo sys-fs/cryptsetup static-libs >> /etc/portage/package.use" || die "cannot append to package.use"
-#    spawn_chroot "emerge cryptsetup"    || die "could not emerge cryptsetup"
-    
-    spawn_chroot "emerge cryptsetup --autounmask-write" || die "could not unmask cryptsetup"
-    spawn_chroot "etc-update << EOF
--5
-EOF
-" || die "cannot update /etc files"
-    spawn_chroot "emerge cryptsetup" || die "could not emerge cryptsetup"
+# pre_install_kernel_builder() {
+# }
+# skip install_kernel_builder
+# post_install_kernel_builder() {
+# }
 
-    
+# pre_install_initramfs_builder() {
+# }
+# skip install_initramfs_builder
+# post_install_initramfs_builder() {
+# }
+
+pre_build_kernel() {
+    for i in dev-libs/libgcrypt \
+             dev-libs/popt \
+	     dev-libs/libgpg-error \
+	     sys-fs/cryptsetup
+    do
+        spawn_chroot "echo $i static-libs >> /etc/portage/package.use" || die "cannot append $i to package.use"
+    done
+    spawn_chroot "emerge cryptsetup"    || die "could not emerge cryptsetup"
 }
 # skip build_kernel
 # post_build_kernel() {
