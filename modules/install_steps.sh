@@ -524,8 +524,6 @@ starting_cleanup() {
 
 finishing_cleanup() {
     cleanup
-
-    spawn "cp ${logfile} ${chroot_dir}/root/$(basename ${logfile})" || warn "could not copy install logfile into chroot"
 }
 
 failure_cleanup() {
