@@ -164,10 +164,11 @@ source "${profile}"
 
 ! touch ${logfile} 2>/dev/null && ( error "Logfile is not writeable!" ; exit 1 )
 
-[ "${do_raid}" == "yes" ]      && has "mdadm"
-[ "${do_lvm}"  == "yes" ]      && has "pvcreate"
-[ "${do_luks}" == "yes" ]      && has "cryptsetup"
-[ -n "$(grep xz ${profile})" ] && has "unxz"
+[ "${do_raid}" == "yes" ]          && has "mdadm"
+[ "${do_lvm}"  == "yes" ]          && has "pvcreate"
+[ "${do_luks}" == "yes" ]          && has "cryptsetup"
+[ -n "$(grep xz ${profile})" ]     && has "unxz"
+[ -n "$(grep dracut ${profile})" ] && has "dracut"
 
 # make sure it's clean before
 runstep starting_cleanup                                              "Cleaning up"
