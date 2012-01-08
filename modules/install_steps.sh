@@ -370,7 +370,7 @@ build_initramfs() {
         spawn_chroot "genkernel ${genkernel_opts} initramfs"    || die "could not build initramfs"
     # use KIGen 
     elif [ "${initramfs_builder}" == "kigen" ]; then
-        spawn_chroot "kigen ${kigen_initramfs_opts} initramfs"  || die "could not build initramfs
+        spawn_chroot "kigen ${kigen_initramfs_opts} initramfs"  || die "could not build initramfs"
     # use Dracut
     elif [ "${initramfs_builder}" == "dracut" ]; then
         spawn_chroot "dracut --force ${dracut_initramfs_opts}"  || die "could not build initramfs"
