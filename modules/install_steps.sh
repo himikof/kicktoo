@@ -498,7 +498,6 @@ run_post_install_script() {
 
 cleanup() {
     if [ -f "/proc/mounts" ]; then
-#        for mnt in $(awk '{ print $2; }' /proc/mounts | grep ^${chroot_dir} | sort -r | uniq); do
         for mnt in $(awk '{ print $2; }' /proc/mounts | grep ^${chroot_dir} | sort -r); do
             spawn "umount ${mnt}" || warn "  could not unmount ${mnt}"
             sleep 0.3
@@ -517,8 +516,6 @@ cleanup() {
             spawn "cryptsetup remove ${luksdev}" || warn "could not remove luks device /dev/mapper/${luksdev}"
         done
     fi
-    
-    spawn "cp ${logfile} ${chroot_dir}/root/$(basename ${logfile})" || warn "could not copy install logfile into chroot"
 }
 
 starting_cleanup() {
@@ -527,6 +524,8 @@ starting_cleanup() {
 
 finishing_cleanup() {
     cleanup
+
+    spawn "cp ${logfile} ${chroot_dir}/root/$(basename ${logfile})" || warn "could not copy install logfile into chroot"
 }
 
 failure_cleanup() {
@@ -535,12 +534,4 @@ failure_cleanup() {
     if [ -f ${logfile} ]; then
         spawn "mv ${logfile} ${logfile}.failed"     || warn "could not move ${logfile} to ${logfile}.failed"
     fi
-
-    #####################################################################
-    # FIXME this takes care of umounting a second time ${chroot_dir}/boot
-    #       $(mount) does not show it but $(cat /proc/mounts) does, WTF?!
-#    if [ -n "$(cat /proc/mounts | grep ${chroot_dir}/boot)" ]; then     #
-#        umount ${chroot_dir}/boot                                       #
-#    fi                                                                  #
-    #####################################################################
 }
