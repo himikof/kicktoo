@@ -194,6 +194,8 @@ fi
 [ "${do_tree}"          == "yes" ] && runstep fetch_repo_tree         "Fetching repository tree"
 [ "${do_tree}"          == "yes" ] && runstep unpack_repo_tree        "Unpacking repository tree"
 [ "${do_kbin}"          == "yes" ] && runstep copy_kernel             "Copying precompiled kernel"
+[ "${do_kernel}"        == "yes" ] && runstep install_kernel_builder  "Installing kernel builder"
+[ "${do_kernel}"        == "yes" ] && runstep install_initramfs_builder "Installing initramfs builder"
 [ "${do_kernel}"        == "yes" ] && runstep build_kernel            "Building kernel"
 [ "${do_kernel}"        == "yes" ] && runstep build_initramfs         "Building initramfs"
 [ "${do_postnet}"       == "yes" ] && runstep setup_network_post      "Setting up post-install networking"

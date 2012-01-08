@@ -331,9 +331,20 @@ copy_kernel() {
     cp "${systemmap_binary}"    "${chroot_dir}/boot" || die "could not copy precompiled kernel to ${chroot_dir}/boot"
 }
 
+install_kernel_builder() {
+    spawn_chroot "emerge ${kernel_builder}" || die "could not emerge ${kernel_builder}"
+}
+
+install_initramfs_builder() {
+    # initramfs builder could already be installed in build_kernel
+    if [ -z $(spawn_chroot "command -v ${initramfs_builder}") ]; then
+        spawn_chroot "emerge ${initramfs_builder}" || die "could not emerge ${initramfs_builder}"
+    fi
+}
+
 build_kernel() {
     spawn_chroot "emerge ${kernel_sources}" || die "could not emerge kernel sources"
-    spawn_chroot "emerge ${kernel_builder}" || die "could not emerge ${kernel_builder}"
+#    spawn_chroot "emerge ${kernel_builder}" || die "could not emerge ${kernel_builder}"
     # use genkernel
     if [ "${kernel_builder}" == "genkernel" ]; then
         if [ -n "${kernel_config_uri}" ]; then
@@ -361,9 +372,9 @@ build_kernel() {
 
 build_initramfs() {
     # initramfs builder could already be installed in build_kernel
-    if [ -z $(spawn_chroot "command -v ${initramfs_builder}") ]; then
-        spawn_chroot "emerge ${initramfs_builder}" || die "could not emerge ${initramfs_builder}"
-    fi
+#    if [ -z $(spawn_chroot "command -v ${initramfs_builder}") ]; then
+#        spawn_chroot "emerge ${initramfs_builder}" || die "could not emerge ${initramfs_builder}"
+#    fi
     
     # use genkernel
     if [ "${initramfs_builder}" == "genkernel" ]; then
