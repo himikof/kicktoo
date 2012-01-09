@@ -170,28 +170,34 @@ pre_build_kernel() {
     done
     spawn_chroot "emerge cryptsetup"    || die "could not emerge cryptsetup"
 }
-skip build_kernel
-post_build_kernel() {
-    # rewrite build_kernel
-    spawn_chroot "emerge ${kernel_sources}" || die "could not emerge kernel sources"
+# skip build_kernel
+# post_build_kernel() {
+#     # rewrite build_kernel
+#     spawn_chroot "emerge ${kernel_sources}" || die "could not emerge kernel sources"
+# 
+#     # FIXME in KIGen: make sure we oldconfig pass ok
+#     spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig " || die "cannot make oldconfig before running KIGen"
+# 
+#     # build kernel w/ KIGen
+#     if [ "${kernel_builder}" == "kigen" ]; then
+#         if [ -n "${kernel_config_uri}" ]; then
+#             fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                  || die "could not fetch kernel config"
+#             spawn_chroot "kigen -n --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
+#         elif [ -n "${kernel_config_file}" ]; then
+#             cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"                    || die "could not copy kernel config"
+#             spawn_chroot "kigen -n --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
+#         else
+#             spawn_chroot "kigen ${kigen_kernel_opts} kernel"                          || die "could not build generic kernel"
+#         fi
+#     fi
+# 
+# }
 
-    # FIXME in KIGen: make sure we oldconfig pass ok
-    spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig " || die "cannot make oldconfig before running KIGen"
-
-    # build kernel w/ KIGen
-    if [ "${kernel_builder}" == "kigen" ]; then
-        if [ -n "${kernel_config_uri}" ]; then
-            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                  || die "could not fetch kernel config"
-            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
-        elif [ -n "${kernel_config_file}" ]; then
-            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"                    || die "could not copy kernel config"
-            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
-        else
-            spawn_chroot "kigen ${kigen_kernel_opts} kernel"                          || die "could not build generic kernel"
-        fi
-    fi
-
-}
+# pre_build_initramfs() {
+# }
+# skip build_initramfs
+# post_build_initramfs() {
+# }
 
 # pre_setup_network_post() {
 # }

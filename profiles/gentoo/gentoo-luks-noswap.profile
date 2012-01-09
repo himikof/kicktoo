@@ -155,6 +155,12 @@ pre_build_kernel() {
 # post_build_kernel() {
 # }
 
+# pre_build_initramfs() {
+# }
+# skip build_initramfs
+# post_build_initramfs() {
+# }
+
 # pre_setup_network_post() {
 # }
 # skip setup_network_post
