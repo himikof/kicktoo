@@ -27,9 +27,11 @@ tree_type     snapshot  http://distfiles.gentoo.org/snapshots/portage-latest.tar
 #tree_type               sync
 
 kernel_builder          kigen
+kigen_kernel_opts
 kernel_config_file      $(pwd)/kconfig/dedibox-SC-${arch}-kernel.config
 kernel_sources          gentoo-sources
-kigen_kernel_opts
+
+initramfs_builder       kigen
 kigen_initramfs_opts    --source-luks --source-dropbear --debugflag --source-ttyecho --rootpasswd=dedi # required
 
 # ship the binary kernel instead of compiling (faster)
@@ -138,8 +140,16 @@ rcadd                   sshd        default
 # post_copy_kernel() {
 # }
 
-# pre_install_kernel_builder() {
-# }
+kigen_version=9999
+pre_install_kernel_builder() {
+    # fetching and unmasking kigen-${kigen_version}.ebuild
+    spawn_chroot "mkdir /usr/local/portage/sys-kernel/kigen -p" || die "cannot mkdir /usr/local/portage/sys-kernel/kigen"
+    spawn_chroot "wget https://github.com/downloads/r1k0/kigen/kigen-${kigen_version}.ebuild -O /usr/local/portage/sys-kernel/kigen/kigen-${kigen_version}.ebuild" || die "cannot fetch kigen-${kigen_version}.ebuild"
+    spawn_chroot "echo -e PORTDIR_OVERLAY=\"/usr/local/portage\" >> /etc/make.conf" || die "cannot append PORTDIR_OVERLAY to make.conf"
+    spawn_chroot "echo sys-kernel/kigen >> /etc/portage/package.keywords" || die "cannot add keyword for kigen"
+
+    spawn_chroot "ebuild /usr/local/portage/sys-kernel/kigen/kigen-${kigen_version}.ebuild digest" || die "cannot digest kigen-${kigen_version}.ebuild"
+}
 # skip install_kernel_builder
 # post_install_kernel_builder() {
 # }
@@ -160,9 +170,28 @@ pre_build_kernel() {
     done
     spawn_chroot "emerge cryptsetup"    || die "could not emerge cryptsetup"
 }
-# skip build_kernel
-# post_build_kernel() {
-# }
+skip build_kernel
+post_build_kernel() {
+    # rewrite build_kernel
+    spawn_chroot "emerge ${kernel_sources}" || die "could not emerge kernel sources"
+
+    # FIXME in KIGen: make sure we oldconfig pass ok
+    spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig " || die "cannot make oldconfig before running KIGen"
+
+    # build kernel w/ KIGen
+    if [ "${kernel_builder}" == "kigen" ]; then
+        if [ -n "${kernel_config_uri}" ]; then
+            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                  || die "could not fetch kernel config"
+            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
+        elif [ -n "${kernel_config_file}" ]; then
+            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"                    || die "could not copy kernel config"
+            spawn_chroot "kigen --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
+        else
+            spawn_chroot "kigen ${kigen_kernel_opts} kernel"                          || die "could not build generic kernel"
+        fi
+    fi
+
+}
 
 # pre_setup_network_post() {
 # }
