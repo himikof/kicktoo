@@ -345,6 +345,7 @@ install_initramfs_builder() {
 build_kernel() {
     spawn_chroot "emerge ${kernel_sources}" || die "could not emerge kernel sources"
 #    spawn_chroot "emerge ${kernel_builder}" || die "could not emerge ${kernel_builder}"
+
     # use genkernel
     if [ "${kernel_builder}" == "genkernel" ]; then
         if [ -n "${kernel_config_uri}" ]; then

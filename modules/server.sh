@@ -34,8 +34,8 @@ server_get_profile() {
     fi
 }
 
-pre_failure_cleanup() {
-    if [ -n "${server_host}" ]; then
-        warn "We should probably tell the server something went wrong"
-    fi
-}
+#pre_failure_cleanup() {
+#    if [ -n "${server_host}" ]; then
+#        warn "We should probably tell the server something went wrong"
+#    fi
+#}
