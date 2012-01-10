@@ -24,20 +24,16 @@ latest_stage_version=$(cat /tmp/stage3.version | grep tar.bz2)
 
 stage_uri               http://distfiles.gentoo.org/releases/${arch}/autobuilds/${latest_stage_version}
 tree_type     snapshot  http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2
-#tree_type               sync
+#tree_type     sync
 
-kernel_builder          kigen
-kigen_kernel_opts
-kernel_config_file      $(pwd)/kconfig/dedibox-SC-${arch}-kernel.config
 kernel_sources          gentoo-sources
 
-initramfs_builder       kigen
-kigen_initramfs_opts    --source-luks --source-dropbear --debugflag --source-ttyecho --rootpasswd=dedi # required
+kernel_builder          kigen
+kigen_kernel_opts       -n -d
+kernel_config_file      $(pwd)/kconfig/dedibox-SC-${arch}-kernel.config
 
-# ship the binary kernel instead of compiling (faster)
-#kernel_binary           $(pwd)/kbin/kernel-genkernel-${arch}-2.6.39-gentoo-r3
-#initramfs_binary        $(pwd)/kbin/initramfs-genkernel-${arch}-2.6.39-gentoo-r3
-#systemmap_binary        $(pwd)/kbin/System.map-genkernel-${arch}-2.6.39-gentoo-r3
+initramfs_builder       kigen
+kigen_initramfs_opts    -n -d --source-luks --source-dropbear --debugflag --source-ttyecho --rootpasswd=dedi # required
 
 timezone                UTC
 rootpw                  a
@@ -49,7 +45,6 @@ extra_packages          openssh # dhcpcd syslog-ng vim
 
 rcadd                   network     default
 rcadd                   sshd        default
-#rcadd                   syslog-ng   default
 
 #############################################################################
 # 1. commented skip runsteps are actually running!                          #
@@ -170,28 +165,33 @@ pre_build_kernel() {
     done
     spawn_chroot "emerge cryptsetup"    || die "could not emerge cryptsetup"
 }
-# skip build_kernel
-# post_build_kernel() {
-#     # rewrite build_kernel
-#     spawn_chroot "emerge ${kernel_sources}" || die "could not emerge kernel sources"
-# 
-#     # FIXME in KIGen: make sure we oldconfig pass ok
-#     spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig " || die "cannot make oldconfig before running KIGen"
-# 
-#     # build kernel w/ KIGen
-#     if [ "${kernel_builder}" == "kigen" ]; then
-#         if [ -n "${kernel_config_uri}" ]; then
-#             fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                  || die "could not fetch kernel config"
-#             spawn_chroot "kigen -n --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
-#         elif [ -n "${kernel_config_file}" ]; then
-#             cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"                    || die "could not copy kernel config"
-#             spawn_chroot "kigen -n --dotconfig=/tmp/kconfig ${kigen_kernel_opts} kernel" || die "could not build custom kernel"
-#         else
-#             spawn_chroot "kigen ${kigen_kernel_opts} kernel"                          || die "could not build generic kernel"
-#         fi
-#     fi
-# 
-# }
+skip build_kernel
+post_build_kernel() {
+    # rewrite build_kernel
+    spawn_chroot "emerge ${kernel_sources}" || die "could not emerge kernel sources"
+
+    # build kernel w/ KIGen
+    if [ "${kernel_builder}" == "kigen" ]; then
+        if [ -n "${kernel_config_uri}" ]; then
+            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"            || die "could not fetch kernel config"
+
+            # FIXME in KIGen: make sure oldconfig pass ok
+            spawn_chroot "cp ${chroot_dir}/tmp/kconfig /usr/src/linux/.config"  || die "could not cp kernel config"
+            spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig "        || die "cannot make oldconfig before running KIGen"
+
+            spawn_chroot "kigen ${kigen_kernel_opts} kernel"                    || die "could not build custom kernel"
+
+        elif [ -n "${kernel_config_file}" ]; then
+            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"              || die "could not copy kernel config"
+            
+            # FIXME in KIGen: make sure oldconfig pass ok
+            spawn_chroot "cp /tmp/kconfig /usr/src/linux/.config"               || die "could not cp kernel config"
+            spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig "        || die "cannot make oldconfig before running KIGen"
+
+            spawn_chroot "kigen ${kigen_kernel_opts} kernel"                    || die "could not build custom kernel"
+        fi
+    fi
+}
 
 # pre_build_initramfs() {
 # }
