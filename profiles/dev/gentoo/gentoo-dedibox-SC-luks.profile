@@ -29,11 +29,11 @@ tree_type     snapshot  http://distfiles.gentoo.org/snapshots/portage-latest.tar
 kernel_sources          gentoo-sources
 
 kernel_builder          kigen
-kigen_kernel_opts       -n -d
+kigen_kernel_opts       --debug --nocolor
 kernel_config_file      $(pwd)/kconfig/dedibox-SC-${arch}-kernel.config
 
 initramfs_builder       kigen
-kigen_initramfs_opts    -n -d --source-luks --source-dropbear --debugflag --source-ttyecho --rootpasswd=dedi # required
+kigen_initramfs_opts    --debug --nocolor --source-luks --source-dropbear --debugflag --source-ttyecho --rootpasswd=dedi
 
 timezone                UTC
 rootpw                  a
