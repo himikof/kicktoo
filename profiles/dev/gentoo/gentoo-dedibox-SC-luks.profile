@@ -229,8 +229,9 @@ post_build_kernel() {
 # post_setup_host() {
 # }
 
-# pre_install_bootloader() {
-# }
+pre_install_bootloader() {
+    spawn_chroot "mount /boot" || die "cannot mount /boot in chroot"
+}
 # skip install_bootloader
 # post_install_bootloader() {
 # }
