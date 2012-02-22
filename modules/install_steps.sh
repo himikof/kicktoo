@@ -509,11 +509,11 @@ cleanup() {
             sleep 0.3
         done
     fi
-    if [ -f "/proc/swaps" ]; then
-        for swap in $(awk '/^\// { print $1; }' /proc/swaps); do
-            spawn "swapoff ${swap}" || warn "  could not deactivate swap on ${swap}"
-        done
-    fi
+#    if [ -f "/proc/swaps" ]; then
+#        for swap in $(awk '/^\// { print $1; }' /proc/swaps); do
+#            spawn "swapoff ${swap}" || warn "  could not deactivate swap on ${swap}"
+#        done
+#    fi
     for array in $(set | grep '^mdraid_' | cut -d= -f1 | sed -e 's:^mdraid_::' | sort); do
         spawn "mdadm --manage --stop /dev/${array}" || die "could not stop mdraid array ${array}"
     done
