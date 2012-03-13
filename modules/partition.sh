@@ -1,6 +1,6 @@
 get_device_size_in_mb() {
     local device=$1
-    
+
     if [ -h "${device}" ]; then
         device=$(readlink ${device})
     fi
@@ -11,7 +11,7 @@ get_device_size_in_mb() {
 human_size_to_mb() {
     local size=$1
     local device_size=$2
-    
+
     debug human_size_to_mb "size=${size}, device_size=${device_size}"
     if [ "${size}" = "+" -o "${size}" = "" ]; then
         debug human_size_to_mb "size is + or blank...using rest of drive"
@@ -47,7 +47,7 @@ format_devnode() {
     local device=$1
     local partition=$2
     local devnode=""
-    
+
     echo "${device}" | grep -q '[0-9]$'
     if [ $? = "0" ]; then
         devnode="${device}p${partition}"
@@ -60,11 +60,11 @@ format_devnode() {
 fdisk_command() {
     local device=$1
     local cmd=$2
-    
+
     debug fdisk_command "running fdisk command '${cmd}' on device ${device}"
-    spawn "partprobe"
+    spawn "partprobe ${device}"
     spawn "echo -en '${cmd}\nw\n' | fdisk ${device}"
-#    spawn "partprobe"
+    spawn "partprobe ${device}"
 #   return $?
 }
 
