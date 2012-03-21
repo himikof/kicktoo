@@ -100,7 +100,6 @@ format_devices() {
         case "${fs}" in
             swap)
                 formatcmd="mkswap ${devnode}"
-                swapoffs="${devnode} "
                 ;;
             ext2)
                 formatcmd="mke2fs ${devnode}"
@@ -149,6 +148,7 @@ mount_local_partitions() {
             case "${type}" in
                 swap)
                     spawn "swapon ${devnode}" || warn "could not activate swap ${devnode}"
+                    swapoffs="${devnode} "
                     ;;
                 ext2|ext3|ext4|reiserfs|reiserfs3|xfs|btrfs)
                     echo "mount -t ${type} ${devnode} ${chroot_dir}${mountpoint} ${mountopts}" >> /tmp/install.mounts
