@@ -100,6 +100,7 @@ format_devices() {
         case "${fs}" in
             swap)
                 formatcmd="mkswap ${devnode}"
+                swapoffs="${devnode} "
                 ;;
             ext2)
                 formatcmd="mke2fs ${devnode}"
@@ -514,6 +515,9 @@ cleanup() {
 #            spawn "swapoff ${swap}" || warn "  could not deactivate swap on ${swap}"
 #        done
 #    fi
+    for swap in $(echo ${swapoffs}); do
+        spawn "swapoff ${swap}" || warn "  could not deactivate swap on ${swap}"
+    done
     for array in $(set | grep '^mdraid_' | cut -d= -f1 | sed -e 's:^mdraid_::' | sort); do
         spawn "mdadm --manage --stop /dev/${array}" || die "could not stop mdraid array ${array}"
     done
