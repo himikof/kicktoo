@@ -156,9 +156,10 @@ pre_install_kernel_builder() {
 # }
 
 pre_build_kernel() {
-    for i in dev-libs/libgcrypt \
-             dev-libs/popt \
+    for i in dev-libs/libgcrypt    \
+             dev-libs/popt         \
 	     dev-libs/libgpg-error \
+	     sys-apps/util-linux   \
 	     sys-fs/cryptsetup
     do
         spawn_chroot "echo $i static-libs >> /etc/portage/package.use" || die "cannot append $i to package.use"
