@@ -27,7 +27,7 @@ detect_baselayout2() {
 }
 
 # grub-0.9x & grub-1.9x config syntax is not compatible
-detect_grub2() {
-#    spawn_chroot "[ -e /sbin/grub2-setup ]"
-    spawn "if [ -e ${chroot_dir}/sbin/grub2-setup ]; then bootloader=grub2; else bootloader=grub;fi"
-}
+#detect_grub2() {
+##    spawn_chroot "[ -e /sbin/grub2-setup ]"
+#    spawn "if [ -e ${chroot_dir}/sbin/grub2-setup ]; then bootloader=grub2; else bootloader=grub;fi"
+#}
