@@ -68,7 +68,7 @@ Options:
     -v, --verbose         Be verbose (show command output)
     -d, --debug           Output debugging messages
     -q, --quiet           Only output fatal error messages
-    -o, --chroot          Chroot using a profile
+    -o, --chroot          Chroot into profile / mountfs 
     --close               Close devices setup by --chroot
 EOF
 #    -c, --client <host>   Act as a client and connect to a kicktoo daemon
