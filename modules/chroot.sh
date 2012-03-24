@@ -1,9 +1,8 @@
 chroot_dir="/mnt/chroot"
 
 chroot_into() {
-    echo "Checking type of setup: simple, luks or lvm"
+    echo "Checking type of setup: clear, luks or lvm"
     root=$(grep ^mountfs ${profile} | grep " / " | cut -d" " -f2)
-    echo $root
     if $(echo $root | grep /dev/mapper 1>/dev/null 2>&1); then
         if is_luks; then
             chroot_luks $root
