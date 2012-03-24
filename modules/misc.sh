@@ -23,10 +23,11 @@ get_mac_address() {
 # baselayout-1 & baselayout-2 config syntax is not compatible
 # uppercase in baselayout-1 lower in -2
 detect_baselayout2() {
-    spawn_chroot "[ -e /lib/librc.so ] && true " && true
+    spawn_chroot "[ -e /lib/librc.so ]" 
 }
 
 # grub-0.9x & grub-1.9x config syntax is not compatible
 detect_grub2() {
-    spawn_chroot "[ -e /sbin/grub-setup ] && true " && true
+#    spawn_chroot "[ -e /sbin/grub2-setup ]"
+    spawn "if [ -e ${chroot_dir}/sbin/grub2-setup ]; then bootloader=grub2; else bootloader=grub;fi"
 }
