@@ -15,14 +15,18 @@ runstep() {
             server_send_request "update_status" "func=${func}&descr=$(echo "${descr}" | sed -e 's: :+:g')"
         fi
     fi
+
     if $(isafunc pre_${func}); then
         echo -e "  => pre_${func}()"
         debug runstep "executing pre-hook for ${func}"
         pre_${func}
     fi
+
     if [ "${skipfunc}" != "1" ]; then
         notify "${descr}"
-        ${func}
+
+        ${func} # <<<
+
     else
         debug runstep "skipping step ${func}"
     fi

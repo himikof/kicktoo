@@ -1,25 +1,32 @@
 chroot_dir="/mnt/chroot"
 
 chroot_into() {
+    mkdir -p $chroot_dir &>/dev/null
     echo "Checking type of setup: clear, luks or lvm"
     root=$(grep ^mountfs ${profile} | grep " / " | cut -d" " -f2)
     if $(echo $root | grep /dev/mapper 1>/dev/null 2>&1); then
         if is_luks; then
+            echo "Found: $root luks"
             chroot_luks $root
+        elif is_lvm; then
+            echo "Found: $root lvm"
+            chroot_lvm $root
+        else
+            echo "Found: $root"
+            chroot_clear $root
         fi
-    else
-        # check if lvm?
-        chroot_clear $root
     fi
 }
 
 is_luks() {
     cryptsetup isLuks $1 ; return $?
 }
-
+is_lvm() {
+    local lvm=$(grep ^lvm_volgroup ${profile})
+    [ -n $lvm ] && true
+    return $?
+}
 chroot_clear() {
-    mkdir -p $chroot_dir &>/dev/null
-    
     mount $1 $chroot_dir
 
     mount -t proc proc  ${chroot_dir}/proc &>/dev/null
@@ -35,8 +42,6 @@ chroot_clear() {
 }
 
 chroot_luks() {
-    mkdir -p $chroot_dir &>/dev/null
-
     cryptsetup luksOpen ${1} root
     mount /dev/mapper/root ${chroot_dir}
 
@@ -50,6 +55,10 @@ chroot_luks() {
     echo "Chrooting into LUKS device..."
 
     chroot ${chroot_dir} /bin/bash
+}
+
+chroot_lvm() {
+    echo "lvm"
 }
 
 chroot_close() {
