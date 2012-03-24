@@ -517,7 +517,7 @@ cleanup() {
     done
     if [ -d "/dev/mapper" ]; then
         # NOTE let lvm cleanup before luks 
-        for lvmdev in $(ls /dev/mapper/vg-*); do
+        for lvmdev in $(ls /dev/mapper/vg-* 2>/dev/null); do
             spawn "lvremove ${lvmdev} -f" || warn "could not remove lvm device ${lvmdev}"
         done
         for luksdev in $(ls /dev/mapper | grep -v control); do
