@@ -516,6 +516,10 @@ cleanup() {
         spawn "mdadm --manage --stop /dev/${array}" || die "could not stop mdraid array ${array}"
     done
     if [ -d "/dev/mapper" ]; then
+        # NOTE let lvm cleanup before luks 
+        for lvmdev in $(ls /dev/mapper/vg-*); do
+            spawn "lvremove /dev/mapper/${lvmdev} -f" || warn "could not remove lvm device /dev/mapper/$lvmdev"
+        done
         for luksdev in $(ls /dev/mapper | grep -v control); do
             spawn "cryptsetup remove ${luksdev}" || warn "could not remove luks device /dev/mapper/${luksdev}"
         done
@@ -536,6 +540,6 @@ failure_cleanup() {
     cleanup
 
     if [ -f ${logfile} ]; then
-        spawn "mv ${logfile} ${logfile}.failed"     || warn "could not move ${logfile} to ${logfile}.failed"
+        spawn "mv ${logfile} ${logfile}.failed" || warn "could not move ${logfile} to ${logfile}.failed"
     fi
 }
