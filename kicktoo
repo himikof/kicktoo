@@ -76,7 +76,7 @@ EOF
     --version             Print version
 
 Parameter:
-    profile              Path to an install profile
+    profile               Path to an install profile
 
 Tip:
     read profiles/config.txt for all profile features and options

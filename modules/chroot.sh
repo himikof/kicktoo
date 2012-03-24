@@ -27,8 +27,7 @@ chroot_clear() {
     mount -o rbind /dev ${chroot_dir}/dev  &>/dev/null
     mount -o bind /sys  ${chroot_dir}/sys  &>/dev/null
 
-    echo "You take care of mounting /boot and others"
-    echo "when done:"
+    echo "When done:"
     echo " # exit"
     echo " # kicktoo --close <profile>"
     echo "Chrooting..."
@@ -37,12 +36,22 @@ chroot_clear() {
 }
 
 chroot_luks() {
-    echo "Chrooting"
-}
+    mkdir -p $chroot_dir &>/dev/null
 
-#determine_closure() {
-#    
-#}
+    cryptsetup luksOpen ${1} root
+    mount /dev/mapper/root ${chroot_dir}
+
+    mount -t proc proc  ${chroot_dir}/proc &>/dev/null
+    mount -o rbind /dev ${chroot_dir}/dev  &>/dev/null
+    mount -o bind /sys  ${chroot_dir}/sys  &>/dev/null
+
+    echo "When done:"
+    echo " # exit"
+    echo " # kicktoo --close <profile>"
+    echo "Chrooting into LUKS device..."
+
+    chroot ${chroot_dir} /bin/bash
+}
 
 chroot_close() {
     if umount -l -f ${chroot_dir}/dev &>/dev/null; then
@@ -60,12 +69,10 @@ chroot_close() {
     if umount -l -f ${chroot_dir} &>/dev/null; then
         echo "${chroot_dir} umounted"
     fi
-#    cryptsetup luksClose root &>/dev/null
-#    if ! test -b /dev/mapper/root ; then
-#        echo "LUKS devices closed!"
-#    else
-#        echo "Your box is still opened!"
-#        echo "Rerun 'kicktoo --close <profile>' or reboot"
-#        exit 1
-#    fi
+    cryptsetup luksClose root &>/dev/null
+    if test -b /dev/mapper/root ; then
+        echo "Your box is still opened!"
+        echo "Rerun 'kicktoo --close <profile>' or reboot"
+        exit 1
+    fi
 }
