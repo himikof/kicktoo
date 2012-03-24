@@ -510,7 +510,7 @@ cleanup() {
         done
     fi
     for swap in $(echo ${swapoffs}); do
-        spawn "swapoff ${swap}" || warn "  could not deactivate swap on ${swap}"
+        spawn "swapoff ${swap} 2>/dev/null" || warn "  could not deactivate swap on ${swap}"
     done
     for array in $(set | grep '^mdraid_' | cut -d= -f1 | sed -e 's:^mdraid_::' | sort); do
         spawn "mdadm --manage --stop /dev/${array}" || die "could not stop mdraid array ${array}"
