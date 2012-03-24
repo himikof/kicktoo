@@ -448,13 +448,8 @@ install_bootloader() {
 }
 
 configure_bootloader() {
-    # find installed grub version: 0 is version 1 and 1 is version
-    vgrub=$(cat /var/db/pkg/sys-boot/grub*/PF | cut -d"-" -f2 | cut -d. -f1)
-    if [ "$vgrub" == "1" ] || [ "$vgrub" == "2" ]; then
-        bootloader=grub2
-    else 
-        bootloader=grub
-    fi
+    detect_grub2
+
     if $(isafunc configure_bootloader_${bootloader}); then
         configure_bootloader_${bootloader} || die "could not configure bootloader ${bootloader}"
     else
