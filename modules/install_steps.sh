@@ -451,7 +451,13 @@ configure_bootloader() {
 #    if detect_grub2; then
 #        bootloader="grub2"
 #    fi
-    detect_grub2
+#    detect_grub2
+    vgrub=$(cat /var/db/pkg/sys-boot/grub*/PF | cut -d"-" -f2 | cut -d. -f1)
+    if [ "vgrub" == "1" ]; then
+        bootloader=grub2
+    else 
+        bootloader=grub
+    fi
     if $(isafunc configure_bootloader_${bootloader}); then
         configure_bootloader_${bootloader} || die "could not configure bootloader ${bootloader}"
     else
