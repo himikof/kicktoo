@@ -76,7 +76,7 @@ fetch() {
     local protocol=$(get_protocol_from_uri "${uri}")
     debug fetch "protocol is ${protocol}"
 
-# TODO: bug for strange reasons
+# FIXME: bug for strange reasons
 #   if isafunc "fetch_${protocol}" ; then
         fetch_${protocol} "${1}" "${2}"
         return $?

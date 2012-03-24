@@ -105,7 +105,6 @@ format_devices() {
                 formatcmd="mke2fs ${devnode}"
                 ;;
             ext3)
-                #mkfs.ext3 -j -m 1 -O dir_index,filetype,sparse_super /dev/mapper/root
                 formatcmd="mkfs.ext3 -j -m 1 -O dir_index,filetype,sparse_super ${devnode}"
                 ;;
             ext4)
@@ -245,10 +244,10 @@ create_makeconf() {
 }
 
 set_locale() {
-	# make sure locale.gen is not overwritten automatically
-	export CONFIG_PROTECT="/etc/locale.gen"
-	echo "LANG=${system_locale}" >> ${chroot_dir}/etc/env.d/02locale
-	grep ${system_locale} /usr/share/i18n/SUPPORTED > ${chroot_dir}/etc/locale.gen
+    # make sure locale.gen is not overwritten automatically
+    export CONFIG_PROTECT="/etc/locale.gen"
+    echo "LANG=${system_locale}" >> ${chroot_dir}/etc/env.d/02locale
+    grep ${system_locale} /usr/share/i18n/SUPPORTED > ${chroot_dir}/etc/locale.gen
 }
 
 prepare_chroot() {
@@ -326,10 +325,10 @@ unpack_repo_tree() {
 
 copy_kernel() {
     spawn_chroot "mount /boot"
-    # NOTE let cp fail if files are not there
-    cp "${kernel_binary}"       "${chroot_dir}/boot" || die "could not copy precompiled kernel to ${chroot_dir}/boot"
-    cp "${initramfs_binary}"    "${chroot_dir}/boot" || die "could not copy precompiled kernel to ${chroot_dir}/boot"
-    cp "${systemmap_binary}"    "${chroot_dir}/boot" || die "could not copy precompiled kernel to ${chroot_dir}/boot"
+    # let cp fail if files are not there
+    cp "${kernel_binary}"    "${chroot_dir}/boot" || die "could not copy precompiled kernel to ${chroot_dir}/boot"
+    cp "${initramfs_binary}" "${chroot_dir}/boot" || die "could not copy precompiled kernel to ${chroot_dir}/boot"
+    cp "${systemmap_binary}" "${chroot_dir}/boot" || die "could not copy precompiled kernel to ${chroot_dir}/boot"
 }
 
 install_kernel_builder() {
@@ -357,7 +356,7 @@ build_kernel() {
         else
             spawn_chroot "genkernel ${genkernel_opts} kernel"                              || die "could not build generic kernel"
         fi
-    # use KIGen 
+    # use kigen 
     elif [ "${kernel_builder}" == "kigen" ]; then
         if [ -n "${kernel_config_uri}" ]; then
             fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"                  || die "could not fetch kernel config"
@@ -375,7 +374,7 @@ build_initramfs() {
     # use genkernel
     if [ "${initramfs_builder}" == "genkernel" ]; then
         spawn_chroot "genkernel ${genkernel_opts} initramfs"    || die "could not build initramfs"
-    # use KIGen 
+    # use kigen
     elif [ "${initramfs_builder}" == "kigen" ]; then
         spawn_chroot "kigen ${kigen_initramfs_opts} initramfs"  || die "could not build initramfs"
     # use Dracut
@@ -510,11 +509,6 @@ cleanup() {
             sleep 0.3
         done
     fi
-#    if [ -f "/proc/swaps" ]; then
-#        for swap in $(awk '/^\// { print $1; }' /proc/swaps); do
-#            spawn "swapoff ${swap}" || warn "  could not deactivate swap on ${swap}"
-#        done
-#    fi
     for swap in $(echo ${swapoffs}); do
         spawn "swapoff ${swap}" || warn "  could not deactivate swap on ${swap}"
     done
