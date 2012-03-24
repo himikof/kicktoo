@@ -5,7 +5,7 @@ chroot_into() {
     echo "Checking type of setup: clear, luks or lvm"
     local root=$(grep ^mountfs ${profile} | grep " / " | cut -d" " -f2)
     if is_luks $root; then
-        echo "Found: $root luks"
+        echo "Found: $root->$luks_dev luks"
         chroot_luks $luks_dev
     elif is_lvm $root; then
         echo "Found: $root lvm"
@@ -20,19 +20,19 @@ is_luks() {
     # FIXME do more regex checks on profile 
     if $(echo $1 | grep /dev/mapper 1>/dev/null 2>&1); then
         luks_dev=$(grep luks ${profile} | grep $(basename $1) | cut -d" " -f2)
-        echo $luks_dev
         cryptsetup isLuks $luks_dev
         return 0
     fi
     return 1
 }
+
 is_lvm() {
     # FIXME do more regex checks on profile 
     local lvm=$(grep ^lvm_volgroup ${profile})
-    echo $lvm
     [ -z $lvm ] && return 1
     return 0
 }
+
 chroot_clear() {
     mount $1 $chroot_dir
 
@@ -49,9 +49,7 @@ chroot_clear() {
 }
 
 chroot_luks() {
-    sleep 1
-    cryptsetup luksOpen ${1} root
-    sleep 1
+    cryptsetup luksOpen ${1} root || die "failed auth"
     mount /dev/mapper/root ${chroot_dir}
 
     mount -t proc proc  ${chroot_dir}/proc &>/dev/null
@@ -88,9 +86,6 @@ chroot_close() {
     fi
     if cryptsetup luksClose root &>/dev/null; then
         echo "/dev/mapper/root closed"
-    fi
-    if cryptsetup remove swap &>/dev/null; then
-        echo "/dev/mapper/swap closed"
     fi
     if test -b /dev/mapper/root ; then
         echo "Your box is still opened!"
