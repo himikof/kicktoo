@@ -1,6 +1,6 @@
 Kicktoo is meant to automate the manual steps required to build a working Portage based distro.
 
-1) Download the official Gentoo livedvd at (though you may use other livecds):
+1) Download the official Gentoo livedvd (though you may use other livecds):
    http://distfiles.gentoo.org/releases/amd64/12.0/livedvd-x86-amd64-32ul-2012.iso
 
 2) Boot the livedvd
