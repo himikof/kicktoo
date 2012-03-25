@@ -28,9 +28,9 @@ kernel_sources          gentoo-sources
 genkernel_opts          --loglevel=5
 
 # ship the binary kernel instead of compiling (faster)
-#kernel_binary           $(pwd)/kbin/kernel-genkernel-${arch}-2.6.39-gentoo-r3
-#initramfs_binary        $(pwd)/kbin/initramfs-genkernel-${arch}-2.6.39-gentoo-r3
-#systemmap_binary        $(pwd)/kbin/System.map-genkernel-${arch}-2.6.39-gentoo-r3
+#kernel_binary           $(pwd)/kbin/dedibox-SC/kernel-genkernel-${arch}-3.2.1-gentoo-r2
+#initramfs_binary        $(pwd)/kbin/dedibox-SC/initramfs-genkernel-${arch}-3.2.1-gentoo-r2
+#systemmap_binary        $(pwd)/kbin/dedibox-SC/System.map-genkernel-${arch}-3.2.1-gentoo-r2
 
 timezone                UTC
 rootpw                  a
