@@ -27,10 +27,16 @@ tree_type   snapshot    http://distfiles.gentoo.org/snapshots/portage-latest.tar
 
 # get kernel dotconfig from running kernel
 cat /proc/config.gz | gzip -d > /dotconfig
-# get rid of Gentoo official firmware .config..
+# get rid of Gentoo official firmware .config
 grep -v CONFIG_EXTRA_FIRMWARE /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconfig
-# ..and lzo compression
 grep -v LZO                   /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconfig
+grep -v CONFIG_CRYPTO_AES     /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconfig
+grep -v CONFIG_CRYPTO_CBC     /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconfig
+grep -v CONFIG_CRYPTO_SHA256  /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconfig
+# enable the required ones
+echo "CONFIG_CRYPTO_AES=y"    > /dotconfig
+echo "CONFIG_CRYPTO_CBC=y"    > /dotconfig
+echo "CONFIG_CRYPTO_SHA256=y" > /dotconfig
 
 kernel_config_file      /dotconfig
 genkernel_opts          --loglevel=5 --luks
