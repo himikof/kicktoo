@@ -39,7 +39,8 @@ rcadd                   sshd       default
 #rcadd                   syslog-ng  default
 
 # make sure the IP is set for the dedibox
-! [ -z "$(cat $profile | grep  xxx.xxx )" ] && die "profile needs IP config"
+d=$(cat $profile | grep  xxx.xxx )
+! [ -z "$d" ] && echo $d && die "profile needs IP config"
 
 #############################################################################
 # 1. commented skip runsteps are actually running!                          #
