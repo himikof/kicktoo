@@ -140,8 +140,9 @@ post_unpack_repo_tree() {
 # post_install_initramfs_builder() {
 # }
 
-# pre_build_kernel() {
-# }
+pre_build_kernel() {
+    spawn_chroot "emerge genkernel" || die "could not emerge genkernel"
+}
 # skip build_kernel
 # post_build_kernel() {
 # }
