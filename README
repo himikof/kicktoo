@@ -14,7 +14,7 @@ Kicktoo is meant to automate the manual steps required to build a working Portag
    # vim kicktoo/profiles/gentoo/gentoo.profile
 
 6) Run Kicktoo
-   # ./kicktoo -v profiles/gentoo/gentoo.profile
+   # ./kicktoo --verbose profiles/gentoo/gentoo.profile
 
 7) Reboot
 
