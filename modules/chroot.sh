@@ -61,14 +61,29 @@ chroot_luks() {
     echo "When done:"
     echo " # exit"
     echo " # kicktoo --close <profile>"
-    echo "Chrooting into LUKS device..."
+    echo "Chrooting into LUKS env..."
 
     chroot ${chroot_dir} /bin/bash
 }
 
 chroot_lvm() {
     # FIXME try to use > runstep mount_local_partitions
-    echo "lvm"
+    vgscan
+    vgchange -a y
+
+    mount $1 $chroot_dir
+
+    mount -t proc proc  ${chroot_dir}/proc &>/dev/null
+    mount -o rbind /dev ${chroot_dir}/dev  &>/dev/null
+    mount -o bind /sys  ${chroot_dir}/sys  &>/dev/null
+
+    echo "When done:"
+    echo " # exit"
+    echo " # kicktoo --close <profile>"
+    echo "Run 'mount -a' to mount LVM devices from the chroot"
+    echo "Chrooting into LVM env..."
+
+    chroot ${chroot_dir} /bin/bash
 }
 
 chroot_close() {
@@ -95,4 +110,5 @@ chroot_close() {
         echo "Rerun 'kicktoo --close <profile>' or reboot"
         exit 1
     fi
+    # FIXME anything todo for LVM devices?
 }
