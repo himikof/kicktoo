@@ -34,7 +34,6 @@ is_lvm() {
 }
 
 chroot_clear() {
-    # FIXME try to use > runstep mount_local_partitions
     mount $1 $chroot_dir
 
     mount -t proc proc  ${chroot_dir}/proc &>/dev/null
@@ -50,7 +49,6 @@ chroot_clear() {
 }
 
 chroot_luks() {
-    # FIXME try to use > runstep mount_local_partitions
     cryptsetup luksOpen ${1} root || die "failed auth"
     mount /dev/mapper/root ${chroot_dir}
 
@@ -67,7 +65,6 @@ chroot_luks() {
 }
 
 chroot_lvm() {
-    # FIXME try to use > runstep mount_local_partitions
     vgscan
     vgchange -a y
 
