@@ -64,7 +64,8 @@ keymap                  us # fr be-latin1
 hostname                gentoo-lvm
 extra_packages          lvm2 dhcpcd # vim openssh vixie-cron syslog-ng
 
-rcadd                   lvm        default
+rcadd        lvm        default
+rcadd        lvm-monitoring         default
 #rcadd                   sshd       default
 #rcadd                   vixie-cron default
 #rcadd                   syslog-ng  default
