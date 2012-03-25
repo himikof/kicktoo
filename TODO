@@ -2,11 +2,5 @@
 = Wish List =
 -------------
 
-     - add LiLo boot support (default will always stay Grub)
-     - add swap partition as extended by default instead of primary (this would allow gentoo-lvm.profile and another system to dual boot)
-     - add some work about the new kernel 'make localmodconfig' from 2.6.32
-     - add 'precompiled' options to $kernel_sources and provide a binary kernel instead of sources (gain time)
-DONE   - 1 kernel for normal install
-       - 1 kernel for luks install
-       - 1 kernel for lvm install
-     - add support for /usr separated partition (linuxrc+initrd.scripts)
+- add LiLo boot support (default will always stay GRUB)
+- add swap partition as extended by default instead of primary (this would allow gentoo-lvm.profile and another system to dual boot)
