@@ -34,9 +34,9 @@ grep -v CONFIG_CRYPTO_AES     /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconf
 grep -v CONFIG_CRYPTO_CBC     /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconfig
 grep -v CONFIG_CRYPTO_SHA256  /dotconfig > /dotconfig2 ; mv /dotconfig2 /dotconfig
 # enable the required ones
-echo "CONFIG_CRYPTO_AES=y"    > /dotconfig
-echo "CONFIG_CRYPTO_CBC=y"    > /dotconfig
-echo "CONFIG_CRYPTO_SHA256=y" > /dotconfig
+echo "CONFIG_CRYPTO_AES=y"    >> /dotconfig
+echo "CONFIG_CRYPTO_CBC=y"    >> /dotconfig
+echo "CONFIG_CRYPTO_SHA256=y" >> /dotconfig
 
 kernel_config_file      /dotconfig
 genkernel_opts          --loglevel=5 --luks
