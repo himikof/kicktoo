@@ -201,6 +201,8 @@ post_install_extra_packages() {
 ifconfig_eth0="88.xxx.xxx.xxx netmask 255.255.255.0 brd 88.xxx.xxx.255"
 defaultroute="gw 88.xxx.xxx.1"
 EOF
+    ! [ -z "$(echo $ifconfig_eth0 | grep  xxx.xxx )" ] && die "profile needs IP config"
+    ! [ -z "$(echo $defaultroute  | grep  xxx.xxx )" ] && die "profile needs IP config"
 }
 
 # pre_add_and_remove_services() {
