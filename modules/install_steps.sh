@@ -530,15 +530,17 @@ starting_cleanup() {
 }
 
 finishing_cleanup() {
-    spawn "cp ${logfile} ${chroot_dir}/root/$(basename ${logfile})" || warn "could not copy install logfile into chroot"
+    if [ -f ${logfile} ]; then
+        spawn "cp ${logfile} ${chroot_dir}/root/$(basename ${logfile})" || warn "could not copy install logfile into chroot"
+    fi
 
     cleanup
 }
 
 failure_cleanup() {
-    cleanup
-
     if [ -f ${logfile} ]; then
         spawn "mv ${logfile} ${logfile}.failed" || warn "could not move ${logfile} to ${logfile}.failed"
     fi
+
+    cleanup
 }
