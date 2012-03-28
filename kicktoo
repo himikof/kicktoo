@@ -177,7 +177,7 @@ source "${profile}"
 [ -n "$(grep xz ${profile})" ] && has "unxz"
 
 # chroot into a broken profile run
-if [ "${chrootme}" = "yes" ]; then
+if [ "${chrootme}" == "yes" ]; then
     chroot_into
     exit $?
 fi
