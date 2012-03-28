@@ -52,7 +52,7 @@ add_partition() {
     fi
 
     [ -n "${size}" ] && size="+${size}M"
-    fdisk_command ${device} "n\n${primary_extended}${first_minor}\n${size}\nt\n${type_minor}${type}\n"
-    sleep 1
+    fdisk_command ${device} "n\n${primary_extended}${first_minor}\n${size}\nt\n${type_minor}${type}\n" && sleep 1
+
     return $?
 }
