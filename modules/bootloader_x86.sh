@@ -1,8 +1,3 @@
-# if [ -z "${bootloader}" ]; then
-#     warn "bootloader not set...assuming grub"
-#     bootloader="grub"
-# fi
-
 configure_bootloader_grub() {
     debug configure_bootloader_grub "configuring /boot/grub/grub.conf"
     # we are likely using grub-0.97 < 1.xx
