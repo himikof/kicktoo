@@ -66,7 +66,7 @@ get_device_and_partition_from_devnode() {
 }
 
 local arch=$(get_arch)
-if [ -f "modules/bootloader_${arch}.sh" ] || [ -f "/usr/lib/kicktoo-${VERSION}/modules/bootloader_${arch}.sh" ]; then
+if [ -f "modules/bootloader_${arch}.sh" ] || [ -f "/usr/share/kicktoo/modules/bootloader_${arch}.sh" ]; then
     debug bootloader.sh "loading arch-specific module bootloader_${arch}.sh"
     import bootloader_${arch}
 fi
