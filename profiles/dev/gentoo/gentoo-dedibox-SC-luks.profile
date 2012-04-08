@@ -29,7 +29,7 @@ tree_type     snapshot  http://distfiles.gentoo.org/snapshots/portage-latest.tar
 kernel_sources          gentoo-sources
 
 kernel_builder          kigen
-kigen_kernel_opts       --debug --nocolor
+kigen_kernel_opts       --debug # --nocolor
 kernel_config_file      $(pwd)/kconfig/dedibox-SC-${arch}-kernel.config
 
 initramfs_builder       kigen
