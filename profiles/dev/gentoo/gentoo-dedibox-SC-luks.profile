@@ -174,20 +174,15 @@ post_build_kernel() {
     # build kernel w/ KIGen
     if [ "${kernel_builder}" == "kigen" ]; then
         if [ -n "${kernel_config_uri}" ]; then
-            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig"            || die "could not fetch kernel config"
-
-            # FIXME in KIGen: make sure oldconfig pass ok
-            spawn_chroot "cp ${chroot_dir}/tmp/kconfig /usr/src/linux/.config"  || die "could not cp kernel config"
-            spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig "        || die "cannot make oldconfig before running KIGen"
-
+            fetch "${kernel_config_uri}" "${chroot_dir}/tmp/kconfig" || die "could not fetch kernel config"
         elif [ -n "${kernel_config_file}" ]; then
-            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"              || die "could not copy kernel config"
-            
-            # FIXME in KIGen: make sure oldconfig pass ok
-            spawn_chroot "cp /tmp/kconfig /usr/src/linux/.config"               || die "could not cp kernel config"
-            spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig "        || die "cannot make oldconfig before running KIGen"
+            cp "${kernel_config_file}" "${chroot_dir}/tmp/kconfig"   || die "could not copy kernel config"
         fi
-        spawn_chroot "kigen ${kigen_kernel_opts} kernel"                    || die "could not build custom kernel"
+
+        # FIXME in KIGen: make sure oldconfig pass ok
+        spawn_chroot "cp ${chroot_dir}/tmp/kconfig /usr/src/linux/.config" || die "could not cp kernel config"
+        spawn_chroot "cd /usr/src/linux && yes '' | make oldconfig "       || die "cannot make oldconfig before running KIGen"
+        spawn_chroot "kigen ${kigen_kernel_opts} kernel"                   || die "could not build custom kernel"
     fi
 }
 
