@@ -161,10 +161,15 @@ extra_packages          dhcpcd # openssh syslog-ng
 # }
 
 pre_build_kernel() {
-    # FIXME don't global USE static-libs but apply only for cryptsetup and deps
-    spawn_chroot "emerge gentoolkit"    || die "could not merge gentoolkit"
-    spawn_chroot "euse -E static-libs"  || die "could not enable static-libs USE"
-    spawn_chroot "emerge cryptsetup"    || die "could not emerge cryptsetup"
+    for i in dev-libs/libgcrypt     \
+             dev-libs/popt          \
+             dev-libs/libgpg-error  \
+             sys-apps/util-linux    \
+             sys-fs/cryptsetup
+    do
+        spawn_chroot "echo $i static-libs >> /etc/portage/package.use" || die "cannot append $i to package.use"
+    done
+    spawn_chroot "emerge cryptsetup" || die "could not emerge cryptsetup"
 }
 # skip build_kernel
 # post_build_kernel() {
