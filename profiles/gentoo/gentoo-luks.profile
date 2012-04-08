@@ -50,7 +50,7 @@ kernel_sources          gentoo-sources
 timezone                UTC
 bootloader              grub
 bootloader_kernel_args  crypt_root=/dev/sda3 # should match root device in the $luks variable
-rootpw                  a
+rootpw                  a # CHANGE ME
 keymap                  us # fr be-latin1
 hostname                gentoo-luks
 extra_packages          dhcpcd # openssh syslog-ng
