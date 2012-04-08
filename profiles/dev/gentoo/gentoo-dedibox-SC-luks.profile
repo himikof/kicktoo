@@ -38,7 +38,7 @@ kigen_initramfs_opts    --debug --nocolor --source-luks --source-dropbear --debu
 timezone                UTC
 rootpw                  a
 bootloader              grub
-bootloader_kernel_args  crypt_root=/dev/sda3 # should match root device in the $luks variable
+bootloader_kernel_args  crypt_root=/dev/sda3 docrypt dokeymap keymap=fr dodropbear ip=dhcp # should match root device in the $luks variable
 keymap                  fr
 hostname                dedi-luks
 extra_packages          openssh # dhcpcd syslog-ng vim
