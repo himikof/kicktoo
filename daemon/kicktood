@@ -17,7 +17,7 @@ my @profiles = ();
 my $config_path = join(' ', @ARGV[1..(@ARGV-1)]);
 
 # read kicktood.conf
-open CONF, $config_path || die "Can not open $config_path";
+open CONF, $config_path || die "ERROR: run ./kicktood --conf <path to kicktood.conf>";
 my $conf = join "", <CONF>;
 close CONF;
 eval $conf; die "Can not eval $config_path" if $@;
