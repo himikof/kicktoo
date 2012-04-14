@@ -80,6 +80,6 @@ fetch() {
         fetch_${protocol} "${1}" "${2}"
         return $?
     else
-        die "Expecting ftp http https protocol: ${protocol} ${1} ${2}"
+        die "Expecting ftp|http|https|kicktoo protocol: ${protocol} ${1} ${2}"
     fi
 }
