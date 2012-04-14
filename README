@@ -35,7 +35,7 @@ Kicktoo is meant to automate the manual steps required to build a working Portag
    # cd kicktoo/daemon
    # vim kicktood.conf 
    # emerge HTTP-Daemon
-   # ./kicktood
+   # ./kicktood --conf kicktood.conf
 
 2) Run kicktoo from the local host
    # cd kicktoo
