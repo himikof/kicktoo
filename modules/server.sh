@@ -5,6 +5,7 @@ server_init() {
     else
         server_host=${server}
     fi
+
     mac_address=$(get_mac_address)
     if [ -z "${server_port}" ]; then
         server_port=1331
@@ -21,6 +22,7 @@ server_send_request() {
 
 server_get_profile() {
     local profile_uri=$(server_send_request "get_profile_path" "mac=${mac_address}")
+
     if [ -z "${profile_uri}" ]; then
         warn "error in response from server...could not retrieve profile URI"
         return 1
@@ -30,7 +32,7 @@ server_get_profile() {
             error "could not fetch profile"
             exit 1
         fi
-        notify "fetched profile from ${profile_uri}"
+        notify "Fetched profile from ${profile_uri}"
     fi
 }
 
