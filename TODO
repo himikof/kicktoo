@@ -7,3 +7,4 @@
 - for gentoo-luks.profile instead of harcoding static-libs deps for cryptsetup use: emerge --autounmask-write && etc-update --automode -5
   but --automode portage-2.1.10.56 is not yet in stable
 - make kicktood read from kicktood.conf
+- make a gentoo-luks-lvm.profile
