@@ -6,10 +6,6 @@ use warnings;
 use HTTP::Daemon;
 use HTTP::Status;
 
-my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-# looks like 2012-04-14 15:43:56
-my $now = "%4d-%02d-%02d %02d:%02d:%02d\n",$year+1900,$mon+1,$mday,$hour,$min,$sec;
-
 my %conf = (
     port => 1331,
     bind_address => "0.0.0.0",
@@ -20,7 +16,7 @@ sub debug {
     my $msg = shift;
 
     if($conf{debug}) {
-        print "DEBUG: $now " . $msg . "\n";
+        print "DEBUG: " . $msg . "\n";
     }
 }
 
