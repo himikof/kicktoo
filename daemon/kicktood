@@ -141,6 +141,8 @@ sub main {
         print "!!! Could not create daemon\n";
         exit 1;
     }
+    debug("HTTP Daemon started");
+    debug("Awaiting remote connections...");
 
     # wait for connection
     while(my $conn = $daemon->accept) {
