@@ -23,6 +23,10 @@ server_send_request() {
 server_get_profile() {
     local profile_uri=$(server_send_request "get_profile_path" "mac=${mac_address}")
 
+    # when --verbose is passed the output gets appended before too which is bad
+    # so always make sure we stripped out the crap by always getting last field
+    profile_uri=$(echo ${profile_uri} | awk '{print $NF}')
+
     if [ -z "${profile_uri}" ]; then
         warn "error in response from server...could not retrieve profile URI"
         return 1
