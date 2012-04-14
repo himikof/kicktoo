@@ -111,7 +111,7 @@ sub handle_request {
     foreach(keys %{$args}) {
         $debugargs .= ($debugargs ? ", " : "") . $_ . "->" . $args->{$_};
     }
-    debug("path=" . $path . ", args=" . $debugargs);
+    debug("Accepted connection from " . $conn->peerhost() . ":" . $conn->peerport() . " " . $path . " " . $debugargs);
 
     if($request->method ne "GET") {
         $conn->send_error(RC_FORBIDDEN);
@@ -147,10 +147,8 @@ sub main {
 
     # wait for connection
     while(my $conn = $daemon->accept) {
-        debug("Accepted connection from " . $conn->peerhost() . ":" . $conn->peerport());
         handle_request($conn);
         $conn->close;
-        debug("Connection closed\n");
     }
 }
 
