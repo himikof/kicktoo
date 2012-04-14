@@ -70,9 +70,7 @@ Options:
     -q, --quiet           Only output fatal error messages
     -o, --chroot          Chroot into profile / mountfs 
     --close               Close devices setup by --chroot
-EOF
-#    -c, --client <host>   Act as a client and connect to a kicktoo daemon
-    cat <<FOE
+    -c, --client <host>   Act as a client and fetch profile from a kicktoo daemon
     --version             Print version
 
 Parameter:
