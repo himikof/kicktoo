@@ -8,7 +8,7 @@ server_init() {
 
     mac_address=$(get_mac_address)
     if [ -z "${server_port}" ]; then
-        server_port=1331
+        server_port=1337
     fi
 }
 
