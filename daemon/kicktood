@@ -7,7 +7,7 @@ use HTTP::Daemon;
 use HTTP::Status;
 
 my %conf = (
-    port => 1331,
+    port => 1337,
     bind_address => "0.0.0.0",
     debug => 1
 );
