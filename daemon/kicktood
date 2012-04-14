@@ -13,13 +13,14 @@ my %conf = (
 );
 
 my @profiles = ();
+# ./kicktood --conf $config_path
+my $config_path = join(' ', @ARGV[1..(@ARGV-1)]);
 
-# read kicktood.conf from current dir
-# FIXME make the config file passed to kicktood with --conf
-open CONF, "kicktood.conf" || die "Can not open kicktood.conf";
+# read kicktood.conf
+open CONF, $config_path || die "Can not open $config_path";
 my $conf = join "", <CONF>;
 close CONF;
-eval $conf; die "Can not eval kicktood.conf" if $@;
+eval $conf; die "Can not eval $config_path" if $@;
 
 sub debug {
     my $msg = shift;
