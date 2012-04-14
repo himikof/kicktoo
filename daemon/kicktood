@@ -79,16 +79,6 @@ sub get_profile_path {
         close TMP;
     }
 
-#    my @profiles = (
-#        # FIXME this config part should be easilier to config
-#        # think of a way to customize this somewhere else
-#        ["BB:CC:*", "/path/to/profile3"],
-#        ["AA:BB:CC:DD:*", "/path/to/profile1"],
-#        # this will match any mac address and feed gentoo.profile
-#        # by default
-#        ["*", "/root/kicktoo/profiles/gentoo/gentoo.profile"],
-#    );
-
     # FIXME check if said profiles paths exist
     foreach my $profile (@profiles) {
         my @profile_macparts = split /:/, $profile->[0];
