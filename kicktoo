@@ -70,7 +70,7 @@ Options:
     -q, --quiet           Only output fatal error messages
     -o, --chroot          Chroot into profile / mountfs 
     --close               Close devices setup by --chroot
-    -c, --client <host>   Act as a client and fetch profile from a kicktoo daemon
+    -c, --client <host>   Act as a client and fetch profiles from a kicktood daemon
     --version             Print version
 
 Parameter:
@@ -83,9 +83,19 @@ EOF
 }
 
 # import modules
-for i in output misc spawn fetcher bootloader partition install_steps config stepcontrol server chroot
+for i in output         \
+        misc            \
+        spawn           \
+        fetcher         \
+        bootloader      \
+        partition       \
+        install_steps   \
+        config          \
+        stepcontrol     \
+        server          \
+        chroot
 do
-    import $i
+    import ${i}
 done
 
 while [ ${#} -gt 0 ]
@@ -135,13 +145,29 @@ do
             exit 1
             ;;
         *)
-            profile=$a
+            profile=${a}
             ;;
     esac
 done
 
 # check for required programs on livecd
-for a in bash curl fdisk grep shred egrep mount swapoff swapon mke2fs wget chroot tar whoami hostname partprobe awk
+for a in bash       \
+        curl        \
+        fdisk       \
+        grep        \
+        shred       \
+        egrep       \
+        mount       \
+        swapoff     \
+        swapon      \
+        mke2fs      \
+        wget        \
+        chroot      \
+        tar         \
+        whoami      \
+        hostname    \
+        partprobe   \
+        awk
 do  
     has "${a}"
 done
@@ -197,7 +223,7 @@ debug main                                                              "Pushing
 run_pre_install_script                                                  "Running pre-install script if any"
 
 [ "${do_part}"          == "yes" ] && runstep partition                 "Partitioning"
-[ "${do_raid}"          == "yes" ] && runstep setup_mdraid              "Setting up RAID arrays"
+ "${do_raid}"          == "yes" ] && runstep setup_mdraid              "Setting up RAID arrays"
 [ "${do_lvm}"           == "yes" ] && runstep setup_lvm                 "Setting up LVM volumes"
 [ "${do_luks}"          == "yes" ] && runstep luks_devices              "Encrypting devices"
 [ "${do_format}"        == "yes" ] && runstep format_devices            "Formatting devices"
