@@ -39,9 +39,3 @@ server_get_profile() {
         notify "Fetched profile from ${profile_uri}"
     fi
 }
-
-#pre_failure_cleanup() {
-#    if [ -n "${server_host}" ]; then
-#        warn "We should probably tell the server something went wrong"
-#    fi
-#}
