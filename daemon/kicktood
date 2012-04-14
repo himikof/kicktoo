@@ -111,7 +111,7 @@ sub handle_request {
     foreach(keys %{$args}) {
         $debugargs .= ($debugargs ? ", " : "") . $_ . "->" . $args->{$_};
     }
-    debug("Accepted connection from " . $conn->peerhost() . ":" . $conn->peerport() . " " . $path . " " . $debugargs);
+    debug($conn->peerhost() . ":" . $conn->peerport() . " " . $path . " " . $debugargs);
 
     if($request->method ne "GET") {
         $conn->send_error(RC_FORBIDDEN);
@@ -142,8 +142,7 @@ sub main {
         print "!!! Could not create daemon\n";
         exit 1;
     }
-    debug("HTTP Daemon started on port $conf{port}");
-    debug("Awaiting remote connections...\n");
+    debug("HTTP Daemon started on port $conf{port}...\n");
 
     # wait for connection
     while(my $conn = $daemon->accept) {
