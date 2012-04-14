@@ -99,6 +99,9 @@ chroot_close() {
     if umount -l -f ${chroot_dir} &>/dev/null; then
         echo "${chroot_dir} umounted"
     fi
+    if vgchange -a n vg &>/dev/null; then
+        echo "lvm volumes closed"
+    fi
     if cryptsetup luksClose root &>/dev/null; then
         echo "/dev/mapper/root closed"
     fi
@@ -107,5 +110,4 @@ chroot_close() {
         echo "Rerun 'kicktoo --close <profile>' or reboot"
         exit 1
     fi
-    # FIXME anything todo for LVM devices?
 }
