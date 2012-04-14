@@ -97,8 +97,6 @@ sub get_profile_path {
             last;
         }
     }
-    debug("return $profile_path");
-
     return $profile_path;
 }
 
