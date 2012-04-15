@@ -223,7 +223,7 @@ debug main                                                              "Pushing
 run_pre_install_script                                                  "Running pre-install script if any"
 
 [ "${do_part}"          == "yes" ] && runstep partition                 "Partitioning"
- "${do_raid}"          == "yes" ] && runstep setup_mdraid              "Setting up RAID arrays"
+[ "${do_raid}"          == "yes" ] && runstep setup_mdraid              "Setting up RAID arrays"
 [ "${do_lvm}"           == "yes" ] && runstep setup_lvm                 "Setting up LVM volumes"
 [ "${do_luks}"          == "yes" ] && runstep luks_devices              "Encrypting devices"
 [ "${do_format}"        == "yes" ] && runstep format_devices            "Formatting devices"
