@@ -69,18 +69,15 @@ sub get_profile_path {
     my $profile_path;
     my @macparts = split /:/, $mac;
 
-    if(0) {
-        open TMP, "< /tmp/kicktood.profiles";
-        my @profiles;
-        while(<TMP>) {
-            chomp;
-            my @parts = split /\s+/;
-            push @profiles, \@parts;
-        }
-        close TMP;
-    }
+#    open TMP, "< /tmp/kicktood.profiles";
+#    my @profiles;
+#    while(<TMP>) {
+#        chomp;
+#        my @parts = split /\s+/;
+#        push @profiles, \@parts;
+#    }
+#    close TMP;
 
-    # FIXME check if said profiles paths exist
     foreach my $profile (@profiles) {
         my @profile_macparts = split /:/, $profile->[0];
         my $match = 1;
