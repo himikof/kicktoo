@@ -7,12 +7,13 @@ use HTTP::Daemon;
 use HTTP::Status;
 
 my %conf = (
-    port => 1337,
     bind_address => "0.0.0.0",
-    debug => 1
+    port         => 1337,
+    debug        => 1
 );
 
 my @profiles = ();
+
 # ./kicktood --conf $config_path
 my $config_path = join(' ', @ARGV[1..(@ARGV-1)]);
 
