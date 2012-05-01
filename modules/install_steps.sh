@@ -516,7 +516,7 @@ cleanup() {
     done
     if [ -d "/dev/mapper" ]; then
         # NOTE let lvm cleanup before luks 
-        spawn "vgchange -a n vg" || warn "could not run vgchange -a n vg"
+        spawn "vgchange -a n vg 2>/dev/null" || warn "could not run vgchange -a n vg"
         sleep 0.3
         for luksdev in $(ls /dev/mapper | grep -v control); do
             spawn "cryptsetup remove ${luksdev}" || warn "could not remove luks device /dev/mapper/${luksdev}"
