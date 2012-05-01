@@ -33,7 +33,7 @@ kigen_kernel_opts       --debug # --nocolor
 kernel_config_file      $(pwd)/kconfig/dedibox-SC-${arch}-kernel.config
 
 initramfs_builder       kigen
-kigen_initramfs_opts    --debug --nocolor --source-luks --source-dropbear --debugflag --source-ttyecho --rootpasswd=dedi
+kigen_initramfs_opts    --debug --source-luks --bin-dropbear --dynlibs --source-ttyecho --source-strace --source-screen --rootpasswd=dedi
 
 timezone                UTC
 rootpw                  a
@@ -186,8 +186,12 @@ post_build_kernel() {
     fi
 }
 
-# pre_build_initramfs() {
-# }
+pre_build_initramfs() {
+    # if we call for --bin-dropbear and/or ----bin-busybox
+    # we need to have them installed priorly
+    spawn_chroot "emerge dropbear" || die "could not emerge dropbear required for kigen"
+    spawn_chroot "emerge busybox" || die "could not emerge busybox required for kigen"
+}
 # skip build_initramfs
 # post_build_initramfs() {
 # }
