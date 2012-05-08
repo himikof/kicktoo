@@ -163,9 +163,7 @@ makeconf_line() {
 
 locale_set() {
  	do_locale=yes
-	local locale=$1
-
-	system_locale="${locale}"
+	locales=$1
 }
 
 tree_type() {
