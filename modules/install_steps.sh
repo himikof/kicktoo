@@ -244,10 +244,23 @@ create_makeconf() {
 }
 
 set_locale() {
+	# retrieve first locale in the list, and
+    # match with first in supported locales
+    # to format the LANG
+    local first_locale=$(echo ${locales} | awk '{print $1}')
+    local system_locale=$(cat /usr/share/i18n/SUPPORTED | grep "^${first_locale}" | head -n 1 | awk '{print $1}')
+    echo "LANG=\"${system_locale}\"" >> ${chroot_dir}/etc/env.d/02locale
+	
+    # remove existing locale.gen and
+    # overwrite with any matching locales
+    rm ${chroot_dir}/etc/locale.gen
+
+    for locale in ${locales}; do
+        grep "^${locale}" /usr/share/i18n/SUPPORTED >> ${chroot_dir}/etc/locale.gen
+    done
+	
     # make sure locale.gen is not overwritten automatically
     export CONFIG_PROTECT="/etc/locale.gen"
-    echo "LANG=${system_locale}" >> ${chroot_dir}/etc/env.d/02locale
-    grep ${system_locale} /usr/share/i18n/SUPPORTED > ${chroot_dir}/etc/locale.gen
 }
 
 prepare_chroot() {
