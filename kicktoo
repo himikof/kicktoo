@@ -44,14 +44,16 @@ has() {
 
 import() {
     module=$1
-    if source modules/${module}.sh ; then
+    if source modules/${module}.sh > /dev/null 2>&1 ; then
+        sourcedir="modules"
         true
-    elif source /usr/share/kicktoo/modules/${module}.sh ; then
+    elif source /usr/share/kicktoo/modules/${module}.sh > /dev/null 2>&1 ; then
+        sourcedir="/usr/share/kicktoo/modules"
         true
     else
         echo "critical error - cannot load modules - exiting!" ; exit 1
     fi
-    debug import "imported module ${module}"
+    debug import "imported module ${module} from ${sourcedir}"
 }
 
 usage() {
@@ -79,22 +81,6 @@ Tip:
 
 EOF
 }
-
-# import modules
-for i in output         \
-        misc            \
-        spawn           \
-        fetcher         \
-        bootloader      \
-        partition       \
-        install_steps   \
-        config          \
-        stepcontrol     \
-        server          \
-        chroot
-do
-    import ${i}
-done
 
 while [ ${#} -gt 0 ]
 do
@@ -133,6 +119,22 @@ do
             profile=${a}
             ;;
     esac
+done
+
+# import modules
+for i in output         \
+        misc            \
+        spawn           \
+        fetcher         \
+        bootloader      \
+        partition       \
+        install_steps   \
+        config          \
+        stepcontrol     \
+        server          \
+        chroot
+do
+    import ${i}
 done
 
 # check for required programs on livecd
