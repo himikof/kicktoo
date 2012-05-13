@@ -4,7 +4,6 @@ VERSION=0.4.2
 
 debug=0
 verbose=0
-quiet=0
 
 do_part=0
 do_raid=0
@@ -67,7 +66,6 @@ Options:
     -h, --help            This
     -v, --verbose         Be verbose (show command output)
     -d, --debug           Output debugging messages
-    -q, --quiet           Only output fatal error messages
     -o, --chroot          Chroot into profile / mountfs 
     --close               Close devices setup by --chroot
     -c, --client <host>   Act as a client and fetch profiles from a kicktood daemon
@@ -110,20 +108,7 @@ do
         -d|--debug)
             debug=1
             ;;
-        -q|--quiet)
-            if [ ${verbose} = 1 ]; then
-                warn "The --quiet and --verbose options are mutually exclusive"
-                warn "Last option will prevail"
-                verbose=0
-            fi
-            quiet=1
-            ;;
         -v|--verbose)
-            if [ ${quiet} = 1 ]; then
-                warn "The --quiet and --verbose options are mutually exclusive"
-                warn "Last option will prevail"
-                quiet=0
-            fi
             verbose=1
             ;;
         -c|--client)

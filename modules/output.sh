@@ -20,7 +20,7 @@ debug() {
 notify() {
     local msg=$1
     
-    [ $quiet = 0 ] && echo -e " ${GOOD}*${NORMAL} ${msg}"
+    [ $verbose = 1 ] && echo -e " ${GOOD}*${NORMAL} ${msg}"
     log "${msg}"
 }
 
@@ -42,7 +42,7 @@ die() {
 warn() {
     local msg=$1
     
-    [ $quiet = 0 ] && echo -e " ${WARN}*${NORMAL} ${msg}" >&2
+    [ $verbose = 1 ] && echo -e " ${WARN}*${NORMAL} ${msg}" >&2
     log "Warning: ${msg}"
 }
 
