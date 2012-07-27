@@ -120,6 +120,12 @@ format_devices() {
             reiserfs|reiserfs3)
                 formatcmd="mkreiserfs -q ${devnode}"
                 ;;
+            fat16)
+                formatcmd="mkfs.vfat -F 16 ${devnode}"
+                ;;
+            fat32)
+                formatcmd="mkfs.vfat -F 32 ${devnode}"
+                ;;
             *)
                 formatcmd=""
                 warn "don't know how to format ${devnode} as ${fs}"
