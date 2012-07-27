@@ -4,10 +4,11 @@ part() {
     local minor=$2
     local type=$3
     local size=$4
+    local bootable=$5
     
     drive=$(echo ${drive} | sed -e 's:^/dev/::' -e 's:/:_:g')
     local drive_temp="partitions_${drive}"
-    local tmppart="${minor}:${type}:${size}"
+    local tmppart="${minor}:${type}:${size}:${bootable}"
     if [ -n "$(eval echo \${${drive_temp}})" ]; then
         eval "${drive_temp}=\"$(eval echo \${${drive_temp}}) ${tmppart}\""
     else

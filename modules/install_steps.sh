@@ -23,6 +23,7 @@ partition() {
             local minor=$(echo ${partition} | cut -d: -f1)
             local type=$(echo ${partition} | cut -d: -f2)
             local size=$(echo ${partition} | cut -d: -f3)
+            local bootable=$(echo ${partition} | cut -d: -f4)
             local devnode=$(format_devnode "${device}" "${minor}")
             debug partition "devnode is ${devnode}"
             if [ "${type}" = "extended" ]; then
@@ -33,7 +34,7 @@ partition() {
                 [ "${newsize}" = "-1" ] && die "could not translate size '${size}' to a usable value"
                 device_size="$(echo ${size_devicesize} | cut -d '|' -f2)"
             fi
-        add_partition "${device}" "${minor}" "${newsize}" "${type}" || die "could not add partition ${minor} to device ${device}"
+        add_partition "${device}" "${minor}" "${newsize}" "${type}" "${bootable}" || die "could not add partition ${minor} to device ${device}"
         done
     done
 }

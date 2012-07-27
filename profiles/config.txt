@@ -5,7 +5,7 @@ The following is a list of all the valid configuration options with description 
 part - Creates a partition
 
   Usage:
-    part <drive> <minor> <type> [size]
+    part <drive> <minor> <type> [size] [boot]
 
   Parameters:
     drive - the drive to add this partition (such as hda, sdb, etc.)
@@ -15,6 +15,8 @@ part - Creates a partition
             only), '+' for remaining space, or 'n%' for percentage of remaining
             (these should only be used after all specific partition sizes are
             specified), leave blank for "extended"
+    boot  - whether this partition is bootable; set to "boot" if the partition
+            should be bootable, leave blank for non-bootable
 
 ================================
 mdraid - Creates an md raid array
