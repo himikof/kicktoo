@@ -70,7 +70,7 @@ fdisk_command() {
 }
 
 local arch=$(get_arch)
-if [ -f "modules/partition_${arch}.sh" ] || [ -f "/usr/lib/kicktoo/modules/partition_${arch}.sh" ]; then
+if [ -f "modules/partition_${arch}.sh" ] || [ -f "/usr/share/kicktoo/modules/partition_${arch}.sh" ]; then
     debug partition.sh "loading arch-specific module partition_${arch}.sh"
     import partition_${arch}
 fi
