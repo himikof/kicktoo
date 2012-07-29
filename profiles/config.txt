@@ -17,6 +17,7 @@ part - Creates a partition
             specified), leave blank for "extended"
     boot  - whether this partition is bootable; set to "boot" if the partition
             should be bootable, leave blank for non-bootable
+			note that an extended partition can't be bootable
 
 ================================
 mdraid - Creates an md raid array

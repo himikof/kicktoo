@@ -27,6 +27,7 @@ add_partition() {
     local minor=$2
     local size=$3
     local type=$4
+    local bootable=$5
     
     if [ "${type}" = "extended" ]; then
         # Extended partition
@@ -53,6 +54,8 @@ add_partition() {
 
     [ -n "${size}" ] && size="+${size}M"
     fdisk_command ${device} "n\n${primary_extended}${first_minor}\n${size}\nt\n${type_minor}${type}\n" && sleep 1
+
+    [ -n "${bootable}" ] && fdisk_command ${device} "a\n${first_minor}\n" && sleep 1
 
     return $?
 }
