@@ -26,7 +26,7 @@ partition() {
             local bootable=$(echo ${partition} | cut -d: -f4)
             local devnode=$(format_devnode "${device}" "${minor}")
             debug partition "devnode is ${devnode}"
-            if [ "${type}" = "extended" ]; then
+            if [ "${type}" = "5" ]; then
                 newsize="${device_size}"
             else
                 size_devicesize="$(human_size_to_mb ${size} ${device_size})"
@@ -34,8 +34,18 @@ partition() {
                 [ "${newsize}" = "-1" ] && die "could not translate size '${size}' to a usable value"
                 device_size="$(echo ${size_devicesize} | cut -d '|' -f2)"
             fi
-        add_partition "${device}" "${minor}" "${newsize}" "${type}" "${bootable}" || die "could not add partition ${minor} to device ${device}"
+            [ -n "${bootable}" ] && bootable="*"
+            
+            add_partition "${device}" "${minor}" "${newsize}" "${type}" "${bootable}" || die "could not add partition ${minor} to device ${device}"
         done
+        
+        if [ "$(get_arch)" != "sparc64" ]; then
+        	# writing added partitions to device
+            sfdisk_command "${device}" && sleep 1 || die "could not write partitions ${partitions} to device ${device}"
+        
+            # clear partitions for next device
+            partitions=""
+        fi
     done
 }
 

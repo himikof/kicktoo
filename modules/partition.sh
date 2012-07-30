@@ -69,6 +69,17 @@ fdisk_command() {
     return $?
 }
 
+# write session partitions to a device
+# sparc64 still uses fdisk
+sfdisk_command() {
+    local device=$1
+    
+    debug sfdisk_command "running sfdisk partitions '${partitions}' on device ${device}"
+    spawn "echo -e '${partitions}' | sfdisk -uM ${device}"
+    
+    return $?
+}
+
 local arch=$(get_arch)
 if [ -f "modules/partition_${arch}.sh" ] || [ -f "/usr/share/kicktoo/modules/partition_${arch}.sh" ]; then
     debug partition.sh "loading arch-specific module partition_${arch}.sh"
