@@ -1,3 +1,14 @@
+geometry() {
+    local heads=$1
+    local sectors=$2
+    local cylinders=$3
+
+    local geometry_local="${heads}:${sectors}:${cylinders}"
+    eval "geometry=\"${geometry_local}\""
+
+    debug geometry "disk geometry is: ${geometry}"
+}
+
 part() {
     do_part=yes
     local drive=$1

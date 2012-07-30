@@ -73,9 +73,17 @@ fdisk_command() {
 # sparc64 still uses fdisk
 sfdisk_command() {
     local device=$1
+    local heads=$(echo ${geometry} | cut -d: -f1)
+    local sectors=$(echo ${geometry} | cut -d: -f2)
+    local cylinders=$(echo ${geometry} | cut -d: -f3)
+    local geometry_args
+
+    [ -n "${heads}" ] && geometry_args="-H ${heads}"
+    [ -n "${sectors}" ] && geometry_args="${geometry_args} -S ${sectors}"
+    [ -n "${cylinders}" ] && geometry_args="${geometry_args} -C ${cylinders}"
     
-    debug sfdisk_command "running sfdisk partitions '${partitions}' on device ${device}"
-    spawn "echo -e '${partitions}' | sfdisk -uM ${device}"
+    debug sfdisk_command "running sfdisk partitions '${partitions}' on device ${device} with geometry ${geometry_args}"
+    spawn "echo -e '${partitions}' | sfdisk -uM ${geometry_args} ${device}"
     
     return $?
 }

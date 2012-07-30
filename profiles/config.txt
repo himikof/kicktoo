@@ -1,5 +1,17 @@
 The following is a list of all the valid configuration options with description and valid parameters.
 
+=====================================================
+geometry - Set the disk geometry for the partitioning.
+           Use only if necessary; the kernel provides
+           good defaults.
+
+  Usage:
+    geometry <heads> <sectors> <cylinders>
+  
+  Parameters:
+    heads - the number of heads
+    sectors - the number of sectors
+    cylinders - the number of cylinders
 
 ==========================
 part - Creates a partition
