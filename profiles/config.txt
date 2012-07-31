@@ -143,7 +143,19 @@ rootpw_crypt - Sets the root password (required if not using rootpw)
     password - the pre-hashed password for the root user
 
 =============================================================
-stage_uri - Specifies the URI to the stage tarball (required)
+stage_latest - Determines the latest stage3 uri. Setting this
+               overwrites stage_uri.
+
+  Usage:
+    stage_latest <arch>
+
+  Parameters:
+    arch - A valid stage3 architecture hosted on Gentoo distfiles,
+           for instance amd64, i686 or armv6j.
+
+===============================================================
+stage_uri - Specifies the URI to the stage tarball (required or 
+            use stage_latest)
 
   Usage:
     stage_uri <uri>
