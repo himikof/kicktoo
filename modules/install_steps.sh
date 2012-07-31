@@ -166,7 +166,7 @@ mount_local_partitions() {
                     spawn "swapon ${devnode}" || warn "could not activate swap ${devnode}"
                     swapoffs="${devnode} "
                     ;;
-                ext2|ext3|ext4|reiserfs|reiserfs3|xfs|btrfs)
+                ext2|ext3|ext4|reiserfs|reiserfs3|xfs|btrfs|vfat)
                     echo "mount -t ${type} ${devnode} ${chroot_dir}${mountpoint} ${mountopts}" >> /tmp/install.mounts
                     ;;
             esac
