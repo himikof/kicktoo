@@ -26,17 +26,19 @@ partition() {
             local bootable=$(echo ${partition} | cut -d: -f4)
             local devnode=$(format_devnode "${device}" "${minor}")
             debug partition "devnode is ${devnode}"
-            if [ "${type}" = "5" ]; then
+            if [ "${type}" = "5" ] || [ "${type}" = "85" ]; then
                 newsize="${device_size}"
+                inputsize=""
             else
                 size_devicesize="$(human_size_to_mb ${size} ${device_size})"
                 newsize="$(echo ${size_devicesize} | cut -d '|' -f1)"
                 [ "${newsize}" = "-1" ] && die "could not translate size '${size}' to a usable value"
                 device_size="$(echo ${size_devicesize} | cut -d '|' -f2)"
+                inputsize="${newsize}"
             fi
             [ -n "${bootable}" ] && bootable="*"
             
-            add_partition "${device}" "${minor}" "${newsize}" "${type}" "${bootable}" || die "could not add partition ${minor} to device ${device}"
+            add_partition "${device}" "${minor}" "${inputsize}" "${type}" "${bootable}" || die "could not add partition ${minor} to device ${device}"
         done
         
         if [ "$(get_arch)" != "sparc64" ]; then
@@ -208,8 +210,8 @@ get_latest_stage_uri() {
         local latest_stage=$(wget -qO- ${distfiles_base}/latest-stage3-${stage_arch}.txt | grep "${stage_arch}-[0-9]\{8\}" )
         if [ -n "${latest_stage}" ]; then
             stage_uri="${distfiles_base}/${latest_stage}"
-            debug get_latest_stage_uri "latest stage uri is ${stage_uri}"
             do_stage_uri=yes
+            debug get_latest_stage_uri "latest stage uri is ${stage_uri}"
         fi
     fi
 }
