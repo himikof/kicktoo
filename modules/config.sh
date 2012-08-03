@@ -165,7 +165,7 @@ stage_latest() {
         armv7a|armv7a_hardfp|armv6j|armv6j_hardfp)
             stage_mainarch="arm" ;;
         *)
-            stage_mainarch="{arch}"
+            stage_mainarch="${arch}"
     esac
 }
 
