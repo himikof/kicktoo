@@ -6,7 +6,7 @@ device=/dev/sda
 
 do_part=yes
 pre_partition() {
-  sgdisk -g -o -n 1:1M:+4M -t 1:ef02 -n 2:0:0 -t 2:e800 $device && partprobe $device
+  sgdisk -g -o -n 1:1M:+4M -t 1:ef02 -n 2:0:0 -t 2:8e00 $device && partprobe $device
 }
 skip partition
 
