@@ -1,22 +1,28 @@
 # Kicktoo barebone lvm profile for use with deployment systems like puppet
 
-part sda 2M 8e +      # linux lvm type
+#part sda 2M 8e +      # linux lvm type
 
-lvm_volgroup vg /dev/sda1
+device=/dev/sda
 
-lvm_logvol vg 200M  boot
+pre_partition() {
+  sgdisk -o -n 1:1M:+4M -t 1:ef02 -n 2:0:0 -t 2:e800 $device && partprobe $device
+}
+
+lvm_volgroup vg ${device}2
+
+#lvm_logvol vg 200M  boot
 lvm_logvol vg 4G    swap
 lvm_logvol vg 10G   root
 #lvm_logvol vg 5G    var
 #lvm_logvol vg 20G   srv
 
-format /dev/vg/boot ext4
+#format /dev/vg/boot ext4
 format /dev/vg/swap swap
 format /dev/vg/root ext4
 #format /dev/vg/var  ext4
 #format /dev/vg/srv  ext4
 
-mountfs /dev/vg/boot ext4 /boot
+#mountfs /dev/vg/boot ext4 /boot
 mountfs /dev/vg/swap swap
 mountfs /dev/vg/root ext4 /     noatime
 #mountfs /dev/vg/var  ext4 /var  noatime
