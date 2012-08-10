@@ -35,3 +35,10 @@ mirror=http://mirror.yandex.ru/gentoo-distfiles
 
 stage_latest            amd64
 tree_type   snapshot    ${mirror}/snapshots/portage-latest.tar.bz2
+
+makeconf_line RUBY_TARGETS ruby18
+extra_packages puppet
+
+post_install() {
+  spawn_chroot "eix-update"
+}
